@@ -1,46 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct node
+{
     int data;
     struct node *prev;
     struct node *next;
 } Node;
 
-Node* createHeader() {
-    Node *header = (Node*)malloc(sizeof(Node));
-    if (!header) {
+Node *createHeader()
+{
+    Node *header = (Node *)malloc(sizeof(Node));
+    if (!header)
+    {
         printf("Memory allocation failed\n");
         exit(1);
     }
-    header->data = 0;          // Not used; just a header
+    header->data = 0; // Not used; just a header
     header->next = header;
     header->prev = header;
     return header;
 }
 
-int isEmpty(Node *header) {
+int isEmpty(Node *header)
+{
     return header->next == header;
 }
 
-void display(Node *header) {
-    if (isEmpty(header)) {
+void display(Node *header)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
     Node *temp = header->next;
     printf("List: ");
-    while (temp != header) {
+    while (temp != header)
+    {
         printf("%d ", temp->data);
         temp = temp->next;
     }
     printf("\n");
 }
 
-int length(Node *header) {
+int length(Node *header)
+{
     int len = 0;
     Node *temp = header->next;
-    while (temp != header) {
+    while (temp != header)
+    {
         len++;
         temp = temp->next;
     }
@@ -49,9 +58,11 @@ int length(Node *header) {
 
 /* ----------- Basic insert helpers ---------- */
 
-void insertFront(Node *header, int data) {
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+void insertFront(Node *header, int data)
+{
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
@@ -63,9 +74,11 @@ void insertFront(Node *header, int data) {
     header->next = newNode;
 }
 
-void insertRear(Node *header, int data) {
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+void insertRear(Node *header, int data)
+{
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
@@ -78,14 +91,17 @@ void insertRear(Node *header, int data) {
 }
 
 /* Insert at position (1-based index) */
-void insertAtPos(Node *header, int data, int pos) {
+void insertAtPos(Node *header, int data, int pos)
+{
     int len = length(header);
-    if (pos < 1 || pos > len + 1) {
+    if (pos < 1 || pos > len + 1)
+    {
         printf("Invalid position.\n");
         return;
     }
 
-    if (pos == 1) {
+    if (pos == 1)
+    {
         insertFront(header, data);
         return;
     }
@@ -93,12 +109,14 @@ void insertAtPos(Node *header, int data, int pos) {
     // Find node currently at position pos (or header if pos==len+1)
     Node *temp = header->next;
     int i;
-    for (i = 1; i < pos && temp != header; i++) {
+    for (i = 1; i < pos && temp != header; i++)
+    {
         temp = temp->next;
     }
     // temp is node at pos (or header if inserting at end)
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
@@ -111,24 +129,29 @@ void insertAtPos(Node *header, int data, int pos) {
 }
 
 /* Insert after first occurrence of key */
-void insertAfterKey(Node *header, int key, int data) {
-    if (isEmpty(header)) {
+void insertAfterKey(Node *header, int key, int data)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
 
     Node *temp = header->next;
-    while (temp != header && temp->data != key) {
+    while (temp != header && temp->data != key)
+    {
         temp = temp->next;
     }
 
-    if (temp == header) {
+    if (temp == header)
+    {
         printf("Key %d not found.\n", key);
         return;
     }
 
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
@@ -141,24 +164,29 @@ void insertAfterKey(Node *header, int key, int data) {
 }
 
 /* Insert before first occurrence of key */
-void insertBeforeKey(Node *header, int key, int data) {
-    if (isEmpty(header)) {
+void insertBeforeKey(Node *header, int key, int data)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
 
     Node *temp = header->next;
-    while (temp != header && temp->data != key) {
+    while (temp != header && temp->data != key)
+    {
         temp = temp->next;
     }
 
-    if (temp == header) {
+    if (temp == header)
+    {
         printf("Key %d not found.\n", key);
         return;
     }
 
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
@@ -172,8 +200,10 @@ void insertBeforeKey(Node *header, int key, int data) {
 
 /* ----------- Deletion helpers ---------- */
 
-void deleteFront(Node *header) {
-    if (isEmpty(header)) {
+void deleteFront(Node *header)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
@@ -184,8 +214,10 @@ void deleteFront(Node *header) {
     free(temp);
 }
 
-void deleteRear(Node *header) {
-    if (isEmpty(header)) {
+void deleteRear(Node *header)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
@@ -196,21 +228,25 @@ void deleteRear(Node *header) {
     free(temp);
 }
 
-void deleteAtPos(Node *header, int pos) {
+void deleteAtPos(Node *header, int pos)
+{
     int len = length(header);
-    if (pos < 1 || pos > len) {
+    if (pos < 1 || pos > len)
+    {
         printf("Invalid position.\n");
         return;
     }
 
-    if (pos == 1) {
+    if (pos == 1)
+    {
         deleteFront(header);
         return;
     }
 
     Node *temp = header->next;
     int i;
-    for (i = 1; i < pos; i++) {
+    for (i = 1; i < pos; i++)
+    {
         temp = temp->next;
     }
 
@@ -221,18 +257,22 @@ void deleteAtPos(Node *header, int pos) {
 }
 
 /* Delete by key (first occurrence) */
-void deleteByKey(Node *header, int key) {
-    if (isEmpty(header)) {
+void deleteByKey(Node *header, int key)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
 
     Node *temp = header->next;
-    while (temp != header && temp->data != key) {
+    while (temp != header && temp->data != key)
+    {
         temp = temp->next;
     }
 
-    if (temp == header) {
+    if (temp == header)
+    {
         printf("Key %d not found.\n", key);
         return;
     }
@@ -245,16 +285,20 @@ void deleteByKey(Node *header, int key) {
 
 /* ----------- Search ---------- */
 
-void searchByKey(Node *header, int key) {
-    if (isEmpty(header)) {
+void searchByKey(Node *header, int key)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
 
     Node *temp = header->next;
     int pos = 1;
-    while (temp != header) {
-        if (temp->data == key) {
+    while (temp != header)
+    {
+        if (temp->data == key)
+        {
             printf("Key %d found at position %d.\n", key, pos);
             return;
         }
@@ -266,16 +310,19 @@ void searchByKey(Node *header, int key) {
 
 /* ----------- Ordered list (ascending) ---------- */
 
-void sortedInsert(Node *header, int data) {
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
+void sortedInsert(Node *header, int data)
+{
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode)
+    {
         printf("Memory allocation failed\n");
         return;
     }
     newNode->data = data;
 
     // If list is empty or first element is >= data, insert at front
-    if (isEmpty(header) || header->next->data >= data) {
+    if (isEmpty(header) || header->next->data >= data)
+    {
         newNode->next = header->next;
         newNode->prev = header;
         header->next->prev = newNode;
@@ -284,7 +331,8 @@ void sortedInsert(Node *header, int data) {
     }
 
     Node *temp = header->next;
-    while (temp->next != header && temp->next->data < data) {
+    while (temp->next != header && temp->next->data < data)
+    {
         temp = temp->next;
     }
 
@@ -295,17 +343,20 @@ void sortedInsert(Node *header, int data) {
 }
 
 /* Create ordered list from scratch */
-void createOrderedList(Node *header) {
+void createOrderedList(Node *header)
+{
     int n, i, val;
     printf("Enter number of elements: ");
     scanf("%d", &n);
 
     // Clear existing list
-    while (!isEmpty(header)) {
+    while (!isEmpty(header))
+    {
         deleteFront(header);
     }
 
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++)
+    {
         printf("Enter element %d: ", i + 1);
         scanf("%d", &val);
         sortedInsert(header, val);
@@ -315,8 +366,10 @@ void createOrderedList(Node *header) {
 
 /* ----------- Reverse list ---------- */
 
-void reverseList(Node *header) {
-    if (isEmpty(header)) {
+void reverseList(Node *header)
+{
+    if (isEmpty(header))
+    {
         printf("List is empty.\n");
         return;
     }
@@ -325,7 +378,8 @@ void reverseList(Node *header) {
     Node *temp;
 
     // For circular doubly list with header, swap next/prev for all nodes including header
-    do {
+    do
+    {
         temp = current->next;
         current->next = current->prev;
         current->prev = temp;
@@ -337,11 +391,13 @@ void reverseList(Node *header) {
 
 /* ----------- Copy list ---------- */
 
-Node* copyList(Node *header) {
+Node *copyList(Node *header)
+{
     Node *newHeader = createHeader();
     Node *temp = header->next;
 
-    while (temp != header) {
+    while (temp != header)
+    {
         insertRear(newHeader, temp->data);
         temp = temp->next;
     }
@@ -352,9 +408,11 @@ Node* copyList(Node *header) {
 
 /* ----------- Free entire list ---------- */
 
-void freeList(Node *header) {
+void freeList(Node *header)
+{
     Node *temp = header->next;
-    while (temp != header) {
+    while (temp != header)
+    {
         Node *nextNode = temp->next;
         free(temp);
         temp = nextNode;
@@ -364,7 +422,8 @@ void freeList(Node *header) {
 
 /* ----------- Menus ---------- */
 
-void insertionMenu(Node *header) {
+void insertionMenu(Node *header)
+{
     int ch, data, pos, key;
     printf("\n--- Insertion Menu ---\n");
     printf("1. Insert at beginning\n");
@@ -375,44 +434,46 @@ void insertionMenu(Node *header) {
     printf("Enter your choice: ");
     scanf("%d", &ch);
 
-    switch (ch) {
-        case 1:
-            printf("Enter data: ");
-            scanf("%d", &data);
-            insertFront(header, data);
-            break;
-        case 2:
-            printf("Enter data: ");
-            scanf("%d", &data);
-            insertRear(header, data);
-            break;
-        case 3:
-            printf("Enter data: ");
-            scanf("%d", &data);
-            printf("Enter position (1-based): ");
-            scanf("%d", &pos);
-            insertAtPos(header, data, pos);
-            break;
-        case 4:
-            printf("Enter key after which to insert: ");
-            scanf("%d", &key);
-            printf("Enter data: ");
-            scanf("%d", &data);
-            insertAfterKey(header, key, data);
-            break;
-        case 5:
-            printf("Enter key before which to insert: ");
-            scanf("%d", &key);
-            printf("Enter data: ");
-            scanf("%d", &data);
-            insertBeforeKey(header, key, data);
-            break;
-        default:
-            printf("Invalid choice.\n");
+    switch (ch)
+    {
+    case 1:
+        printf("Enter data: ");
+        scanf("%d", &data);
+        insertFront(header, data);
+        break;
+    case 2:
+        printf("Enter data: ");
+        scanf("%d", &data);
+        insertRear(header, data);
+        break;
+    case 3:
+        printf("Enter data: ");
+        scanf("%d", &data);
+        printf("Enter position (1-based): ");
+        scanf("%d", &pos);
+        insertAtPos(header, data, pos);
+        break;
+    case 4:
+        printf("Enter key after which to insert: ");
+        scanf("%d", &key);
+        printf("Enter data: ");
+        scanf("%d", &data);
+        insertAfterKey(header, key, data);
+        break;
+    case 5:
+        printf("Enter key before which to insert: ");
+        scanf("%d", &key);
+        printf("Enter data: ");
+        scanf("%d", &data);
+        insertBeforeKey(header, key, data);
+        break;
+    default:
+        printf("Invalid choice.\n");
     }
 }
 
-void deletionMenu(Node *header) {
+void deletionMenu(Node *header)
+{
     int ch, pos, key;
     printf("\n--- Deletion Menu ---\n");
     printf("1. Delete at beginning\n");
@@ -422,36 +483,39 @@ void deletionMenu(Node *header) {
     printf("Enter your choice: ");
     scanf("%d", &ch);
 
-    switch (ch) {
-        case 1:
-            deleteFront(header);
-            break;
-        case 2:
-            deleteRear(header);
-            break;
-        case 3:
-            printf("Enter position (1-based): ");
-            scanf("%d", &pos);
-            deleteAtPos(header, pos);
-            break;
-        case 4:
-            printf("Enter key to delete: ");
-            scanf("%d", &key);
-            deleteByKey(header, key);
-            break;
-        default:
-            printf("Invalid choice.\n");
+    switch (ch)
+    {
+    case 1:
+        deleteFront(header);
+        break;
+    case 2:
+        deleteRear(header);
+        break;
+    case 3:
+        printf("Enter position (1-based): ");
+        scanf("%d", &pos);
+        deleteAtPos(header, pos);
+        break;
+    case 4:
+        printf("Enter key to delete: ");
+        scanf("%d", &key);
+        deleteByKey(header, key);
+        break;
+    default:
+        printf("Invalid choice.\n");
     }
 }
 
 /* ----------- main ---------- */
 
-int main() {
+int main()
+{
     Node *header = createHeader();
-    Node *copyHeader = NULL;  // For storing copy if created
+    Node *copyHeader = NULL; // For storing copy if created
     int choice, key;
 
-    while (1) {
+    while (1)
+    {
         printf("\n==== Circular Doubly Linked List (Header) ====\n");
         printf("1. Insertion operations\n");
         printf("2. Deletion operations\n");
@@ -465,51 +529,57 @@ int main() {
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        switch (choice) {
-            case 1:
-                insertionMenu(header);
-                break;
-            case 2:
-                deletionMenu(header);
-                break;
-            case 3:
-                printf("Enter key to search: ");
-                scanf("%d", &key);
-                searchByKey(header, key);
-                break;
-            case 4:
-                createOrderedList(header);
-                break;
-            case 5:
-                reverseList(header);
-                break;
-            case 6:
-                if (copyHeader != NULL) {
-                    freeList(copyHeader);
-                }
-                copyHeader = copyList(header);
-                break;
-            case 7:
-                printf("Original ");
-                display(header);
-                break;
-            case 8:
-                if (copyHeader == NULL) {
-                    printf("Copy list not created yet.\n");
-                } else {
-                    printf("Copy ");
-                    display(copyHeader);
-                }
-                break;
-            case 9:
-                freeList(header);
-                if (copyHeader != NULL) {
-                    freeList(copyHeader);
-                }
-                printf("Exiting...\n");
-                return 0;
-            default:
-                printf("Invalid choice.\n");
+        switch (choice)
+        {
+        case 1:
+            insertionMenu(header);
+            break;
+        case 2:
+            deletionMenu(header);
+            break;
+        case 3:
+            printf("Enter key to search: ");
+            scanf("%d", &key);
+            searchByKey(header, key);
+            break;
+        case 4:
+            createOrderedList(header);
+            break;
+        case 5:
+            reverseList(header);
+            break;
+        case 6:
+            if (copyHeader != NULL)
+            {
+                freeList(copyHeader);
+            }
+            copyHeader = copyList(header);
+            break;
+        case 7:
+            printf("Original ");
+            display(header);
+            break;
+        case 8:
+            if (copyHeader == NULL)
+            {
+                printf("Copy list not created yet.\n");
+            }
+            else
+            {
+                printf("Copy ");
+                display(copyHeader);
+            }
+            break;
+        case 9:
+            freeList(header);
+            if (copyHeader != NULL)
+            {
+                freeList(copyHeader);
+            }
+            printf("Exiting...\n");
+            return 0;
+        default:
+            printf("Invalid choice.\n");
         }
     }
     return 0;

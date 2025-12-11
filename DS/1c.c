@@ -1,25 +1,32 @@
 #include <stdio.h>
 
-void Read(int  *p, int size){
-        for(int i=0;i<size;++i) scanf("%d", (p+i));
+void Read(int *p, int size)
+{
+        for (int i = 0; i < size; ++i)
+                scanf("%d", (p + i));
 }
 
-void Display(int *p, int size){
-        for(int i=0;i<size;++i) printf("%d ", *(p+i));
+void Display(int *p, int size)
+{
+        for (int i = 0; i < size; ++i)
+                printf("%d ", *(p + i));
 }
 
-void rev(int *p, int size){
-        int i=0, j = size - 1;
-        while(i<j){
-                int temp = *(p+i);
-                *(p+i) = *(p+j);
-                *(p+j) = temp;
+void rev(int *p, int size)
+{
+        int i = 0, j = size - 1;
+        while (i < j)
+        {
+                int temp = *(p + i);
+                *(p + i) = *(p + j);
+                *(p + j) = temp;
                 i++;
                 j--;
         }
 }
 
-int main(){
+int main()
+{
 
         int *p, n;
         printf("Enter the size of the array A: ");
