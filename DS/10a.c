@@ -1,91 +1,183 @@
-// SIMPLE QUEUE
 #include <stdio.h>
 #include <stdlib.h>
 
 #define MAX 5
 
-typedef struct
-{
-    int *arr;
-    int front, rear, size;
-} queue;
+/* ================= STATIC QUEUE (ARRAY) ================= */
 
-void initqueue(queue *q, int size)
-{
-    q->size = size;
-    q->arr = (int *)malloc(sizeof(int) * size);
-    q->front = -1;
-    q->rear = -1;
+typedef struct {
+    int arr[MAX];
+    int front, rear;
+} StaticQueue;
+
+void initStatic(StaticQueue *q) {
+    q->front = q->rear = -1;
 }
 
-int isEmpty(queue *q) { return q->front == -1 || q->front > q->rear; }
+int staticEmpty(StaticQueue *q) {
+    return q->front == -1 || q->front > q->rear;
+}
 
-int isFull(queue *q) { return q->rear == q->size - 1; }
+int staticFull(StaticQueue *q) {
+    return q->rear == MAX - 1;
+}
 
-void enqueue(queue *q, int x)
-{
-    if (isFull(q))
-    {
-        printf("QUEUE OVERFLOW\n");
-        exit(1);
+void staticEnqueue(StaticQueue *q, int x) {
+    if (staticFull(q)) {
+        printf("Static Queue Overflow\n");
+        return;
     }
     if (q->front == -1)
         q->front = 0;
     q->arr[++q->rear] = x;
 }
 
-void dequeue(queue *q)
-{
-    if (isEmpty(q))
-    {
-        printf("Queue underflow\n");
-        exit(1);
+void staticDequeue(StaticQueue *q) {
+    if (staticEmpty(q)) {
+        printf("Static Queue Underflow\n");
+        return;
     }
     printf("Deleted %d\n", q->arr[q->front++]);
 }
 
-void display(queue *q)
-{
-    if (isEmpty(q))
-    {
-        printf("Queue empty\n");
-        exit(1);
+void staticDisplay(StaticQueue *q) {
+    if (staticEmpty(q)) {
+        printf("Static Queue Empty\n");
+        return;
     }
-    for (int i = q->front; i <= q->rear; ++i)
+    for (int i = q->front; i <= q->rear; i++)
         printf("%d ", q->arr[i]);
     printf("\n");
 }
 
-int main()
-{
-    queue q;
-    int choice, x, type, size;
-    printf("1. Static Queue\n2.Dynamic Queue\n3.Choice: ");
-    scanf("%d", &type);
+void staticMenu(StaticQueue *q) {
+    int ch, x;
+    do {
+        printf("\n--- Static Queue Menu ---\n");
+        printf("1.Enqueue  2.Dequeue  3.Display  0.Back\n");
+        scanf("%d", &ch);
 
-    size = (type == 1) ? MAX : (printf("Enter size: "), scanf("%d", &size), size);
-    initqueue(&q, size);
-
-    do
-    {
-        printf("1.Enqueue 2.Dequeue 3.Display 0.Exit\n");
-        scanf("%d", &choice);
-
-        switch (choice)
-        {
+        switch (ch) {
         case 1:
             printf("Enter element: ");
             scanf("%d", &x);
-            enqueue(&q, x);
+            staticEnqueue(q, x);
             break;
         case 2:
-            dequeue(&q);
+            staticDequeue(q);
             break;
         case 3:
-            display(&q);
+            staticDisplay(q);
             break;
         }
-    } while (choice != 0);
-    free(q.arr);
+    } while (ch != 0);
+}
+
+/* ================= DYNAMIC QUEUE (LINKED LIST) ================= */
+
+typedef struct node {
+    int data;
+    struct node *next;
+} Node;
+
+typedef struct {
+    Node *front, *rear;
+} DynamicQueue;
+
+void initDynamic(DynamicQueue *q) {
+    q->front = q->rear = NULL;
+}
+
+void dynamicEnqueue(DynamicQueue *q, int x) {
+    Node *temp = (Node *)malloc(sizeof(Node));
+    temp->data = x;
+    temp->next = NULL;
+
+    if (q->rear == NULL) {
+        q->front = q->rear = temp;
+        return;
+    }
+    q->rear->next = temp;
+    q->rear = temp;
+}
+
+void dynamicDequeue(DynamicQueue *q) {
+    if (q->front == NULL) {
+        printf("Dynamic Queue Underflow\n");
+        return;
+    }
+    Node *temp = q->front;
+    printf("Deleted %d\n", temp->data);
+    q->front = q->front->next;
+
+    if (q->front == NULL)
+        q->rear = NULL;
+
+    free(temp);
+}
+
+void dynamicDisplay(DynamicQueue *q) {
+    if (q->front == NULL) {
+        printf("Dynamic Queue Empty\n");
+        return;
+    }
+    Node *temp = q->front;
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+void dynamicMenu(DynamicQueue *q) {
+    int ch, x;
+    do {
+        printf("\n--- Dynamic Queue Menu ---\n");
+        printf("1.Enqueue  2.Dequeue  3.Display  0.Back\n");
+        scanf("%d", &ch);
+
+        switch (ch) {
+        case 1:
+            printf("Enter element: ");
+            scanf("%d", &x);
+            dynamicEnqueue(q, x);
+            break;
+        case 2:
+            dynamicDequeue(q);
+            break;
+        case 3:
+            dynamicDisplay(q);
+            break;
+        }
+    } while (ch != 0);
+}
+
+/* ================= MAIN MENU ================= */
+
+int main() {
+    int ch;
+    StaticQueue sQ;
+    DynamicQueue dQ;
+
+    initStatic(&sQ);
+    initDynamic(&dQ);
+
+    do {
+        printf("\n==== Queue Implementation ====\n");
+        printf("1. Static Queue (Array)\n");
+        printf("2. Dynamic Queue (Linked List)\n");
+        printf("3. Exit\nChoice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+        case 1:
+            staticMenu(&sQ);
+            break;
+        case 2:
+            dynamicMenu(&dQ);
+            break;
+        }
+    } while (ch != 3);
+
     return 0;
 }
