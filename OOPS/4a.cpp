@@ -1,23 +1,31 @@
-// an election ins contested by 5 cnadidates the candidates are membered 1 to 5 and coting is done by marking the candidates number on the ballot and count they votes cast for each candidate using an arrya variables count. in case a number reas in outside the range 1 to 5
-#include<iostream>
+#include <iostream>
 using namespace std;
-int main(){
-	int votes,candidate;
-	
-	cout << "Enter the number of votes" << endl;
-	cin >> votes;
-	int count[votes] = {0};
-	for(int i = 0;i<votes;i++){
-		cout<< "vote " << i+1<<" ";
-		cin >> candidate;
-		if(candidate >=1 && candidate <=5) count[candidate]++;
-		else count[5]++;	
-	}
-	cout << "vote count" << endl;
-	for(int i = 1;i<=5;i++){
-		cout << "candidate " << i << " " << count[i] << endl;
-	
-	}
-	cout << "spoilt ballots : " << count[5] << endl;
-	return 0;
+
+int main() {
+    int count[6] = {0};   // count[1] to count[5] for candidates
+    int spoilt = 0;
+    int vote;
+
+    cout << "Enter votes (1 to 5). Enter 0 to stop:\n";
+
+    while (true) {
+        cin >> vote;
+
+        if (vote == 0)
+            break;
+
+        if (vote >= 1 && vote <= 5)
+            count[vote]++;
+        else
+            spoilt++;
+    }
+
+    cout << "\nElection Results:\n";
+    for (int i = 1; i <= 5; i++) {
+        cout << "Candidate " << i << ": " << count[i] << " votes\n";
+    }
+
+    cout << "Spoilt ballots: " << spoilt << endl;
+
+    return 0;
 }
